@@ -27,9 +27,27 @@ export const burgerConstructorSlice = createSlice({
         const id = nanoid();
         return { payload: { ...ingredient, id } };
       }
+    },
+    movingIngredient: (
+      state,
+      action: PayloadAction<{ from: number; to: number }>
+    ) => {
+      const { from, to } = action.payload;
+      const ingredients = [...state.ingredients];
+      const [movedItem] = ingredients.splice(from, 1);
+      ingredients.splice(to, 0, movedItem);
+      state.ingredients = ingredients;
+    },
+    deleteIngredient: (state, action: PayloadAction<number>) => {
+      state.ingredients.splice(action.payload, 1);
     }
+  },
+  selectors: {
+    selectBurgerConstructor: (state) => state
   }
 });
 
-export const { addIngredient } = burgerConstructorSlice.actions;
+export const { addIngredient, movingIngredient, deleteIngredient } =
+  burgerConstructorSlice.actions;
 export default burgerConstructorSlice.reducer;
+export const { selectBurgerConstructor } = burgerConstructorSlice.selectors;
