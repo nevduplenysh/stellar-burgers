@@ -4,8 +4,6 @@ import { TIngredient } from '@utils-types';
 import { getIngredientsApi } from '@api';
 import { error } from 'console';
 
-// getIngredientsApi - оно мне надо
-
 type AsyncStatus = 'start' | 'loading' | 'error' | 'success';
 
 interface TIngredientList {
@@ -28,6 +26,7 @@ export const ingredientsSlice = createSlice({
   initialState,
   reducers: {},
   selectors: {
+    selectStatus: (state) => state.status,
     selectIngredients: (state) => state.ingredients
   },
   extraReducers: (builder) => {
@@ -46,5 +45,5 @@ export const ingredientsSlice = createSlice({
   }
 });
 
-export const { selectIngredients } = ingredientsSlice.selectors;
+export const { selectIngredients, selectStatus } = ingredientsSlice.selectors;
 export default ingredientsSlice.reducer;
