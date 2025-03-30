@@ -24,8 +24,10 @@ const App = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
-  const backgroundLocation = location.state?.backgroundLocation;
+  const backgroundLocation = location.state?.background; // Теперь берём из state.background
   console.log(location);
+  console.log('Location:', location);
+  console.log('Background location:', backgroundLocation);
 
   useEffect(() => {
     dispatch(getIngredients());
@@ -93,6 +95,7 @@ const App = () => {
         <Route path='/feed/:number' element={<OrderInfo />} />
         <Route path='/ingredients/:id' element={<IngredientDetails />} />
       </Routes>
+
       {backgroundLocation && (
         <Routes>
           <Route
