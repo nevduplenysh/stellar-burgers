@@ -1,8 +1,18 @@
 import { FC, useMemo } from 'react';
 import { TConstructorIngredient } from '@utils-types';
 import { BurgerConstructorUI } from '@ui';
-import { selectBurgerConstructor } from '../../services/slices/burgerConstructorSlice';
-import { useSelector } from '../../services/store';
+import {
+  removeBurger,
+  selectBurgerConstructor
+} from '../../services/slices/burgerConstructorSlice';
+import { useDispatch, useSelector } from '../../services/store';
+import {
+  clearOrder,
+  orderBurger,
+  selectOrder
+} from '../../services/slices/orderSlice';
+import { selectAuthChecked, selectUser } from '../../services/slices/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
@@ -11,6 +21,8 @@ export const BurgerConstructor: FC = () => {
   // orderModalData === взять из стора данные о сделанном заказе для отображения в модальном окне
   const items = useSelector(selectBurgerConstructor);
   const constructorItems = items;
+  const dispatch = useDispatch();
+  const order = useSelector(selectOrder);
 
   // const constructorItems = {
   //   bun: {
@@ -19,15 +31,43 @@ export const BurgerConstructor: FC = () => {
   //   ingredients: []
   // };
 
-  const orderRequest = false;
+  const orderRequest = order.status === 'loading';
 
-  const orderModalData = null;
+  const orderModalData = order.orderData;
+
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+
+  const isAuthChecked = useSelector(selectAuthChecked);
+
+  // const onOrderClick = () => {
+  //   if (!constructorItems.bun || orderRequest) return;
+  // };
 
   const onOrderClick = () => {
-    if (!constructorItems.bun || orderRequest) return;
+    if (!user) return navigate('/login');
+
+    if (!isAuthChecked) return; // Если аутентификация еще не проверена, выходим из функции
+
+    if (!constructorItems.bun || orderRequest) {
+      console.log(52);
+      return;
+    }
+    dispatch(
+      orderBurger([
+        constructorItems.bun._id,
+        ...constructorItems.ingredients.map(
+          (ing: TConstructorIngredient) => ing._id
+        ),
+        constructorItems.bun._id
+      ])
+    );
   };
+
   const closeOrderModal = () => {
     console.log('9999');
+    dispatch(clearOrder());
+    dispatch(removeBurger());
   };
 
   const price = useMemo(

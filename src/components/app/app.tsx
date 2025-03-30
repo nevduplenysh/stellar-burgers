@@ -19,6 +19,7 @@ import { useDispatch } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngredients } from '../../services/slices/ingredientsSlice';
 import { ProtectedRoute } from '../protected-route/protected-route';
+import { authCheck, getUser } from '../../services/slices/userSlice';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -33,6 +34,12 @@ const App = () => {
     dispatch(getIngredients());
   }, [dispatch]);
 
+  // хз почему но из-за кода ниже повылазили ошибки (возможно ошибки не только здесь)
+
+  useEffect(() => {
+    dispatch(getUser()).finally(() => dispatch(authCheck()));
+  }, [dispatch]);
+
   return (
     <div className={styles.app}>
       <AppHeader />
@@ -43,7 +50,7 @@ const App = () => {
         <Route
           path='/login'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Login />
             </ProtectedRoute>
           }
@@ -51,7 +58,7 @@ const App = () => {
         <Route
           path='/register'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <Register />
             </ProtectedRoute>
           }
@@ -59,7 +66,7 @@ const App = () => {
         <Route
           path='/forgot-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ForgotPassword />
             </ProtectedRoute>
           }
@@ -67,7 +74,7 @@ const App = () => {
         <Route
           path='/reset-password'
           element={
-            <ProtectedRoute>
+            <ProtectedRoute onlyUnAuth>
               <ResetPassword />
             </ProtectedRoute>
           }
