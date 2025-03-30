@@ -47,7 +47,7 @@ export const BurgerConstructor: FC = () => {
   const onOrderClick = () => {
     if (!user) return navigate('/login');
 
-    if (!isAuthChecked) return; // Если аутентификация еще не проверена, выходим из функции
+    // if (!isAuthChecked) return; // Если аутентификация еще не проверена, выходим из функции
 
     if (!constructorItems.bun || orderRequest) {
       console.log(52);

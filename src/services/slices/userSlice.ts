@@ -37,27 +37,51 @@ const initialState: TUserState = {
   status: 'start'
 };
 
+// export const registerUser = createAsyncThunk(
+//   'user/registerUser',
+//   async (userData: TRegisterData, { rejectWithValue }) => {
+//     const data = await registerUserApi(userData);
+//     if (!data?.success) {
+//       return rejectWithValue(data);
+//     }
+//     setCookie('accessToken', data.accessToken);
+//     localStorage.setItem('refreshToken', data.refreshToken);
+
+//     return data;
+//   }
+// );
+
 export const registerUser = createAsyncThunk(
   'user/registerUser',
-  async (userData: TRegisterData, { rejectWithValue }) => {
+  async (userData: TRegisterData) => {
     const data = await registerUserApi(userData);
-    if (!data?.success) {
-      return rejectWithValue(data);
-    }
+
     setCookie('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
 
     return data;
   }
 );
+
+// export const loginUser = createAsyncThunk(
+//   'user/loginUser',
+//   async (userData: TLoginData, { rejectWithValue }) => {
+//     const data = await loginUserApi(userData);
+//     if (!data?.success) {
+//       return rejectWithValue(data);
+//     }
+//     setCookie('accessToken', data.accessToken);
+//     localStorage.setItem('refreshToken', data.refreshToken);
+
+//     return data;
+//   }
+// );
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
-  async (userData: TLoginData, { rejectWithValue }) => {
+  async (userData: TLoginData) => {
     const data = await loginUserApi(userData);
-    if (!data?.success) {
-      return rejectWithValue(data);
-    }
+
     setCookie('accessToken', data.accessToken);
     localStorage.setItem('refreshToken', data.refreshToken);
 
@@ -65,18 +89,33 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+// export const logoutUser = createAsyncThunk(
+//   'user/logoutUser',
+//   (_, { dispatch }) => {
+//     logoutApi()
+//       .then(() => {
+//         localStorage.clear(); // очищаем refreshToken
+//         deleteCookie('accessToken'); // очищаем accessToken
+//         dispatch(userLogout()); // удаляем пользователя из хранилища // 52 крч надо дописать потом как экшен в слайсе
+//       })
+//       .catch(() => {
+//         console.log('Ошибка выполнения выхода');
+//       });
+//   }
+// );
+
 export const logoutUser = createAsyncThunk(
   'user/logoutUser',
-  (_, { dispatch }) => {
-    logoutApi()
-      .then(() => {
-        localStorage.clear(); // очищаем refreshToken
-        deleteCookie('accessToken'); // очищаем accessToken
-        dispatch(userLogout()); // удаляем пользователя из хранилища // 52 крч надо дописать потом как экшен в слайсе
-      })
-      .catch(() => {
-        console.log('Ошибка выполнения выхода');
-      });
+  async (_, { dispatch, rejectWithValue }) => {
+    try {
+      await logoutApi();
+      localStorage.clear();
+      deleteCookie('accessToken');
+      dispatch(userLogout());
+    } catch (error) {
+      console.error('Ошибка выхода:', error);
+      return rejectWithValue(error);
+    }
   }
 );
 

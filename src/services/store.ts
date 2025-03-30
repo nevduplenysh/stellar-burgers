@@ -4,6 +4,8 @@ import burgerConstructorReducer from '../services/slices/burgerConstructorSlice'
 import userReducer from '../services/slices/userSlice';
 import orderReducer from '../services/slices/orderSlice';
 import orderNumberReducer from '../services/slices/orderNumberSlice';
+import odersUserReducer from '../services/slices/ordersUserSlice';
+import feedReducer from '../services/slices/feedSlice';
 
 import {
   TypedUseSelectorHook,
@@ -16,7 +18,9 @@ const rootReducer = combineReducers({
   burgerConstructor: burgerConstructorReducer,
   user: userReducer,
   order: orderReducer,
-  orderNumber: orderNumberReducer
+  orderNumber: orderNumberReducer,
+  odersUser: odersUserReducer,
+  feed: feedReducer
 }); // Заменить на импорт настоящего редьюсера
 
 const store = configureStore({
