@@ -15,44 +15,29 @@ import { selectAuthChecked, selectUser } from '../../services/slices/userSlice';
 import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
-  /** TODO: взять переменные constructorItems, orderRequest и orderModalData из стора */
-  // constructorItems === данные о текущих выбранных ингредиентах и булочке
-  // orderRequest === взять из стора статус выполнения заказа (идёт ли в данный момент запрос на сервер)
-  // orderModalData === взять из стора данные о сделанном заказе для отображения в модальном окне
   const items = useSelector(selectBurgerConstructor);
-  const constructorItems = items;
-  const dispatch = useDispatch();
   const order = useSelector(selectOrder);
+  const user = useSelector(selectUser);
+  const isAuthChecked = useSelector(selectAuthChecked);
 
-  // const constructorItems = {
-  //   bun: {
-  //     price: 0
-  //   },
-  //   ingredients: []
-  // };
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const constructorItems = items;
 
   const orderRequest = order.status === 'loading';
 
   const orderModalData = order.orderData;
 
-  const user = useSelector(selectUser);
-  const navigate = useNavigate();
-
-  const isAuthChecked = useSelector(selectAuthChecked);
-
-  // const onOrderClick = () => {
-  //   if (!constructorItems.bun || orderRequest) return;
-  // };
-
   const onOrderClick = () => {
     if (!user) return navigate('/login');
 
-    // if (!isAuthChecked) return; // Если аутентификация еще не проверена, выходим из функции
+    if (!isAuthChecked) return; // Если аутентификация еще не проверена, выходим из функции
 
     if (!constructorItems.bun || orderRequest) {
-      console.log(52);
       return;
     }
+
     dispatch(
       orderBurger([
         constructorItems.bun._id,
@@ -65,7 +50,6 @@ export const BurgerConstructor: FC = () => {
   };
 
   const closeOrderModal = () => {
-    console.log('9999');
     dispatch(clearOrder());
     dispatch(removeBurger());
   };

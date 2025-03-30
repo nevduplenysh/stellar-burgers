@@ -1,14 +1,10 @@
-import { create } from 'domain';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TIngredient } from '@utils-types';
+import { TAsyncStatus, TIngredient } from '@utils-types';
 import { getIngredientsApi } from '@api';
-import { error } from 'console';
-
-type AsyncStatus = 'start' | 'loading' | 'error' | 'success';
 
 interface TIngredientList {
   ingredients: TIngredient[];
-  status: AsyncStatus;
+  status: TAsyncStatus;
 }
 
 const initialState: TIngredientList = {
@@ -46,5 +42,4 @@ export const ingredientsSlice = createSlice({
 });
 
 export const { selectIngredients, selectStatus } = ingredientsSlice.selectors;
-
 export default ingredientsSlice.reducer;

@@ -1,14 +1,11 @@
 // getOrdersApi()
-
 import { getOrdersApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TOrder } from '@utils-types';
-
-type AsyncStatus = 'start' | 'loading' | 'error' | 'success';
+import { TAsyncStatus, TOrder } from '@utils-types';
 
 interface TOrdersSliceState {
   orders: TOrder[];
-  status: AsyncStatus;
+  status: TAsyncStatus;
 }
 
 const initialState: TOrdersSliceState = {

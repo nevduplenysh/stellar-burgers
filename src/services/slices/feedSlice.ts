@@ -1,17 +1,12 @@
 import { getFeedsApi } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TOrder, TOrdersData } from '@utils-types';
-import { stat } from 'fs';
-
-// getFeedsApi()
-
-type AsyncStatus = 'start' | 'loading' | 'error' | 'success';
+import { TAsyncStatus, TOrder, TOrdersData } from '@utils-types';
 
 export interface TFeedState {
   orders: TOrder[];
   total: number;
   totalToday: number;
-  status: AsyncStatus;
+  status: TAsyncStatus;
 }
 
 export const initialState: TFeedState = {

@@ -8,10 +8,8 @@ import {
   updateUserApi
 } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { TUser } from '@utils-types';
+import { TAsyncStatus, TUser } from '@utils-types';
 import { deleteCookie, setCookie } from '../../utils/cookie';
-import { buffer } from 'stream/consumers';
-import { stat } from 'fs';
 
 // registerUserApi() - регистрация нового пользователя
 
@@ -23,12 +21,10 @@ import { stat } from 'fs';
 
 // logoutApi() - выход пользователя
 
-type AsyncStatus = 'start' | 'loading' | 'error' | 'success';
-
 interface TUserState {
   data: TUser | null;
   isAuthChecked: boolean;
-  status: AsyncStatus;
+  status: TAsyncStatus;
 }
 
 const initialState: TUserState = {
@@ -36,20 +32,6 @@ const initialState: TUserState = {
   isAuthChecked: false,
   status: 'start'
 };
-
-// export const registerUser = createAsyncThunk(
-//   'user/registerUser',
-//   async (userData: TRegisterData, { rejectWithValue }) => {
-//     const data = await registerUserApi(userData);
-//     if (!data?.success) {
-//       return rejectWithValue(data);
-//     }
-//     setCookie('accessToken', data.accessToken);
-//     localStorage.setItem('refreshToken', data.refreshToken);
-
-//     return data;
-//   }
-// );
 
 export const registerUser = createAsyncThunk(
   'user/registerUser',
@@ -63,20 +45,6 @@ export const registerUser = createAsyncThunk(
   }
 );
 
-// export const loginUser = createAsyncThunk(
-//   'user/loginUser',
-//   async (userData: TLoginData, { rejectWithValue }) => {
-//     const data = await loginUserApi(userData);
-//     if (!data?.success) {
-//       return rejectWithValue(data);
-//     }
-//     setCookie('accessToken', data.accessToken);
-//     localStorage.setItem('refreshToken', data.refreshToken);
-
-//     return data;
-//   }
-// );
-
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (userData: TLoginData) => {
@@ -88,21 +56,6 @@ export const loginUser = createAsyncThunk(
     return data;
   }
 );
-
-// export const logoutUser = createAsyncThunk(
-//   'user/logoutUser',
-//   (_, { dispatch }) => {
-//     logoutApi()
-//       .then(() => {
-//         localStorage.clear(); // очищаем refreshToken
-//         deleteCookie('accessToken'); // очищаем accessToken
-//         dispatch(userLogout()); // удаляем пользователя из хранилища // 52 крч надо дописать потом как экшен в слайсе
-//       })
-//       .catch(() => {
-//         console.log('Ошибка выполнения выхода');
-//       });
-//   }
-// );
 
 export const logoutUser = createAsyncThunk(
   'user/logoutUser',
@@ -125,7 +78,7 @@ export const getUser = createAsyncThunk('user/getUser', async () => {
 });
 
 export const updateUser = createAsyncThunk(
-  'updateUser',
+  'user/updateUser',
   async (user: Partial<TRegisterData>) => updateUserApi(user)
 );
 

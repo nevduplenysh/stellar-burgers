@@ -1,17 +1,15 @@
-import { getOrderByNumberApi, orderBurgerApi } from '@api';
+import { orderBurgerApi } from '@api';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { TOrder } from '@utils-types';
+import { TAsyncStatus, TOrder } from '@utils-types';
 
 // orderBurgerApi() - создает новый заказ
 
 // getOrderByNumberApi() - получает заказ по его номеру
 
-type AsyncStatus = 'start' | 'loading' | 'error' | 'success';
-
 interface TOrderState {
   orderData: TOrder | null;
   orderNumber: TOrder[];
-  status: AsyncStatus;
+  status: TAsyncStatus;
 }
 
 const initialState: TOrderState = {
@@ -23,22 +21,10 @@ const initialState: TOrderState = {
 export const orderBurger = createAsyncThunk(
   'oreder/orderBurger',
   async (data: string[]) => {
-    // const response = orderBurgerApi(data).then(({order}) => order);
-    // return response;
     const response = await orderBurgerApi(data);
     return response.order;
   }
 );
-
-// export const getOrderByNumber = createAsyncThunk(
-//   'order/getOrderByNumber',
-//   async (number: number) => {
-//     //   const response = getOrderByNumberApi(number).then(({ orders }) => orders);
-//     //   return response;
-//     const response = await getOrderByNumberApi(number);
-//     return response.orders;
-//   }
-// );
 
 export const orderSlice = createSlice({
   name: 'order',
@@ -51,7 +37,6 @@ export const orderSlice = createSlice({
   },
   selectors: {
     selectOrder: (state) => state
-    // selectOrderNumber: (state) => state
   },
   extraReducers: (builder) => {
     builder
@@ -68,19 +53,6 @@ export const orderSlice = createSlice({
           state.status = 'success';
         }
       );
-    //   .addCase(getOrderByNumber.pending, (state) => {
-    //     state.status = 'loading';
-    //   })
-    //   .addCase(getOrderByNumber.rejected, (state) => {
-    //     state.status = 'error';
-    //   })
-    //   .addCase(
-    //     getOrderByNumber.fulfilled,
-    //     (state, action: PayloadAction<TOrder[]>) => {
-    //         state.orderNumber = action.payload;
-    //         state.status = 'success';
-    //     }
-    //   );
   }
 });
 
