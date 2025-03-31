@@ -12,16 +12,27 @@ import {
 import '../../index.css';
 import styles from './app.module.css';
 
-import { Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Routes,
+  Route,
+  useLocation,
+  useNavigate,
+  useParams,
+  useMatch
+} from 'react-router-dom';
 
 import { AppHeader, IngredientDetails, Modal, OrderInfo } from '@components';
-import { useDispatch } from '../../services/store';
+import { useDispatch, useSelector } from '../../services/store';
 import { useEffect } from 'react';
 import { getIngredients } from '../../services/slices/ingredientsSlice';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { authCheck, getUser } from '../../services/slices/userSlice';
 
 const App = () => {
+  const profileMatch = useMatch('/profile/orders/:number')?.params.number;
+  const feedMatch = useMatch('/feed/:number')?.params.number;
+  const orderNumber = profileMatch || feedMatch;
+
   const navigate = useNavigate();
   const location = useLocation();
   const backgroundLocation = location.state?.background;
@@ -81,8 +92,29 @@ const App = () => {
           }
         />
 
-        <Route path='/ingredients/:id' element={<IngredientDetails />} />
-        <Route path='/feed/:number' element={<OrderInfo />} />
+        <Route
+          path='/ingredients/:id'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p className={`text text_type_main-large ${styles.detailHeader}`}>
+                Детали ингридиента
+              </p>
+              <IngredientDetails />
+            </div>
+          }
+        />
+
+        <Route
+          path='/feed/:number'
+          element={
+            <div className={styles.detailPageWrap}>
+              <p className={`text text_type_main-large ${styles.detailHeader}`}>
+                #{orderNumber && orderNumber.padStart(6, '0')}
+              </p>
+              <OrderInfo />
+            </div>
+          }
+        />
         <Route path='/profile'>
           <Route
             index
@@ -100,6 +132,7 @@ const App = () => {
               </ProtectedRoute>
             }
           />
+          <Route path='orders/:number' element={<OrderInfo />} />
         </Route>
       </Routes>
 
@@ -108,7 +141,7 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title={'Детали Заказа'} onClose={() => navigate(-1)}>
+              <Modal title={`#${orderNumber}`} onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }
@@ -124,11 +157,14 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <ProtectedRoute>
-                <Modal title={'Детали Заказа'} onClose={() => navigate(-1)}>
+              <Modal
+                title={`#${location.pathname.match(/\d+/)}`}
+                onClose={() => navigate(-1)}
+              >
+                <ProtectedRoute>
                   <OrderInfo />
-                </Modal>
-              </ProtectedRoute>
+                </ProtectedRoute>
+              </Modal>
             }
           />
         </Routes>

@@ -9,10 +9,12 @@ import {
   selectOrderNumber
 } from '../../services/slices/orderNumberSlice';
 import { useParams } from 'react-router-dom';
+import { selectOrder } from '../../services/slices/orderSlice';
 
 export const OrderInfo: FC = () => {
   const ingredients: TIngredient[] = useSelector(selectIngredients);
   const { orderByNumber } = useSelector(selectOrderNumber);
+  const order = useSelector(selectOrder);
 
   const dispatch = useDispatch();
 
