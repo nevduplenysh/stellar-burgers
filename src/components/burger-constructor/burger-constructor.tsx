@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 
 export const BurgerConstructor: FC = () => {
   const items = useSelector(selectBurgerConstructor);
+  console.log(items);
   const order = useSelector(selectOrder);
   const user = useSelector(selectUser);
   const isAuthChecked = useSelector(selectAuthChecked);
