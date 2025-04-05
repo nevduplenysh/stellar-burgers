@@ -2,12 +2,12 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TAsyncStatus, TIngredient } from '@utils-types';
 import { getIngredientsApi } from '@api';
 
-interface TIngredientList {
+export interface TIngredientList {
   ingredients: TIngredient[];
   status: TAsyncStatus;
 }
 
-const initialState: TIngredientList = {
+export const initialState: TIngredientList = {
   ingredients: [],
   status: 'start'
 };

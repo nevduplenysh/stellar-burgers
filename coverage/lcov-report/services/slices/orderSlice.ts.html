@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for burgerConstructorSlice.ts</title>
+    <title>Code coverage report for services/slices/orderSlice.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="prettify.css" />
-    <link rel="stylesheet" href="base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> burgerConstructorSlice.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">services/slices</a> orderSlice.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.23% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>63/63</span>
+                <span class='fraction'>60/63</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>7/7</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">83.33% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>5/6</span>
+                <span class='fraction'>2/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">95.23% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>63/63</span>
+                <span class='fraction'>60/63</span>
             </div>
         
             
@@ -145,18 +145,13 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -189,69 +184,74 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
-import { TConstructorIngredient, TIngredient } from '@utils-types';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { orderBurgerApi } from '@api';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { TAsyncStatus, TOrder } from '@utils-types';
 &nbsp;
-export interface TConstructorData {
-  bun: TConstructorIngredient | null;
-  ingredients: TConstructorIngredient[];
+// orderBurgerApi() - создает новый заказ
+&nbsp;
+// getOrderByNumberApi() - получает заказ по его номеру
+&nbsp;
+export interface TOrderState {
+  orderData: TOrder | null;
+  // orderNumber: TOrder[];
+  status: TAsyncStatus;
 }
 &nbsp;
-export const initialState: TConstructorData = {
-  bun: null,
-  ingredients: []
+export const initialState: TOrderState = {
+  orderData: null,
+  // orderNumber: [],
+  status: 'start'
 };
 &nbsp;
-export const burgerConstructorSlice = createSlice({
-  name: 'burgerConstructor',
+export const orderBurger = createAsyncThunk(
+  'oreder/orderBurger',
+  async (data: string[]) =&gt; {
+<span class="cstat-no" title="statement not covered" >    const response = await orderBurgerApi(data);</span>
+<span class="cstat-no" title="statement not covered" >    return response.order;</span>
+<span class="cstat-no" title="statement not covered" >  }</span>
+);
+&nbsp;
+export const orderSlice = createSlice({
+  name: 'order',
   initialState,
   reducers: {
-    addIngredient: {
-      reducer: (state, action: PayloadAction&lt;TConstructorIngredient&gt;) =&gt; {
-        if (action.payload.type === 'bun') {
-          state.bun = action.payload;
-        } else {
-          state.ingredients.push(action.payload);
-        }
-      },
-      prepare: (ingredient: TIngredient) =&gt; {
-        const id = nanoid();
-        return { payload: { ...ingredient, id } };
-      }
-    },
-    movingIngredient: (
-      state,
-      action: PayloadAction&lt;{ from: number; to: number }&gt;
-    ) =&gt; {
-      const { from, to } = action.payload;
-      const ingredients = [...state.ingredients];
-      const [movedItem] = ingredients.splice(from, 1);
-      ingredients.splice(to, 0, movedItem);
-      state.ingredients = ingredients;
-    },
-    deleteIngredient: (state, action: PayloadAction&lt;number&gt;) =&gt; {
-      state.ingredients.splice(action.payload, 1);
-    },
-    removeBurger: (state) =&gt; {
-      state.bun = null;
-      state.ingredients = [];
+    clearOrder: (state) =&gt; {
+      state.orderData = null;
+      state.status = 'start';
     }
   },
   selectors: {
-    selectBurgerConstructor: <span class="fstat-no" title="function not covered" >(state) =&gt; state</span>
+    selectOrder: <span class="fstat-no" title="function not covered" >(state) =&gt; state</span>
+  },
+  extraReducers: (builder) =&gt; {
+    builder
+      .addCase(orderBurger.pending, (state) =&gt; {
+        state.status = 'loading';
+      })
+      .addCase(orderBurger.rejected, (state) =&gt; {
+        state.status = 'error';
+      })
+      .addCase(
+        orderBurger.fulfilled,
+        (state, action: PayloadAction&lt;TOrder&gt;) =&gt; {
+          state.orderData = action.payload;
+          state.status = 'success';
+        }
+      );
   }
 });
 &nbsp;
-export const {
-  addIngredient,
-  movingIngredient,
-  deleteIngredient,
-  removeBurger
-} = burgerConstructorSlice.actions;
+export const { selectOrder } = orderSlice.selectors;
 &nbsp;
-export default burgerConstructorSlice.reducer;
+export const { clearOrder } = orderSlice.actions;
 &nbsp;
-export const { selectBurgerConstructor } = burgerConstructorSlice.selectors;
+export default orderSlice.reducer;
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -259,16 +259,16 @@ export const { selectBurgerConstructor } = burgerConstructorSlice.selectors;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2025-04-05T12:21:09.820Z
+                at 2025-04-05T17:44:54.296Z
             </div>
-        <script src="prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="sorter.js"></script>
-        <script src="block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     

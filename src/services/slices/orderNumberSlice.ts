@@ -2,13 +2,13 @@ import { getOrderByNumberApi } from '@api';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { TAsyncStatus, TOrder } from '@utils-types';
 
-interface TOrdersSliceState {
+export interface TOrdersSliceState {
   orders: TOrder[];
   orderByNumber: TOrder[];
   status: TAsyncStatus;
 }
 
-const initialState: TOrdersSliceState = {
+export const initialState: TOrdersSliceState = {
   orders: [],
   orderByNumber: [],
   status: 'start'

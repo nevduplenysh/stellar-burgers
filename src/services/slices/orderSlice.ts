@@ -6,15 +6,15 @@ import { TAsyncStatus, TOrder } from '@utils-types';
 
 // getOrderByNumberApi() - получает заказ по его номеру
 
-interface TOrderState {
+export interface TOrderState {
   orderData: TOrder | null;
-  orderNumber: TOrder[];
+  // orderNumber: TOrder[];
   status: TAsyncStatus;
 }
 
-const initialState: TOrderState = {
+export const initialState: TOrderState = {
   orderData: null,
-  orderNumber: [],
+  // orderNumber: [],
   status: 'start'
 };
 

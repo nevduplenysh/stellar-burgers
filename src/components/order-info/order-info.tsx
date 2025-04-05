@@ -26,6 +26,8 @@ export const OrderInfo: FC = () => {
   }, [dispatch]);
 
   const orderData = orderByNumber.find((order) => order.number === orderNumber);
+  ///////////////////////////////////////////////////////////////////
+  console.log('orderData: ', orderData);
 
   /* Готовим данные для отображения */
   const orderInfo = useMemo(() => {

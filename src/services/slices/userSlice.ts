@@ -21,13 +21,13 @@ import { deleteCookie, setCookie } from '../../utils/cookie';
 
 // logoutApi() - выход пользователя
 
-interface TUserState {
+export interface TUserState {
   data: TUser | null;
   isAuthChecked: boolean;
   status: TAsyncStatus;
 }
 
-const initialState: TUserState = {
+export const initialState: TUserState = {
   data: null,
   isAuthChecked: false,
   status: 'start'
