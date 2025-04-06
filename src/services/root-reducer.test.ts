@@ -1,4 +1,4 @@
-import rootReducer from './root-reducer'; 
+import rootReducer from './root-reducer';
 import ingredientsReducer from '../services/slices/ingredientsSlice';
 import burgerConstructorReducer from '../services/slices/burgerConstructorSlice';
 import userReducer from '../services/slices/userSlice';
