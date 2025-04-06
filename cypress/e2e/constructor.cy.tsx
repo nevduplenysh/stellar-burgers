@@ -52,13 +52,25 @@ describe('Проверка работоспособности приложени
       cy.get('[data-cy=ingredients-category]').find('li').first().as('ingredient');
     });
 
-    it('Открытие модального окна ингредиента', () => {
-      cy.get('[data-cy=modal]').should('not.exist');
-      cy.get('@ingredient').click();
-      cy.get('[data-cy=modal]').should('be.visible');
-      cy.contains('Детали ингредиента').should('exist');
-    });
+    it('Открытие модального окна ингредиента с правильной информацией', () => {
+      cy.fixture('ingredients.json').then((data) => {
+        const firstIngredient = data.data[3]; 
 
+        cy.get('[data-cy=modal]').should('not.exist');
+    
+        cy.get('[data-cy=ingredients-category]').find('li').eq(3).click();
+    
+        cy.get('[data-cy=modal]').should('be.visible');
+        cy.contains('Детали ингредиента').should('exist');
+    
+        cy.contains(firstIngredient.name).should('exist');
+        cy.contains(firstIngredient.calories).should('exist');
+        cy.contains(firstIngredient.proteins).should('exist');
+        cy.contains(firstIngredient.fat).should('exist');
+        cy.contains(firstIngredient.carbohydrates).should('exist');
+      });
+    });
+    
     it('Закрытие по клику на крестик', () => {
       cy.get('@ingredient').click();
       cy.get('[data-cy=modal]').should('be.visible');
@@ -126,5 +138,4 @@ describe('Проверка работоспособности приложени
       cy.contains('Выберите начинку').should('exist');
     });
   });
-  
 });
